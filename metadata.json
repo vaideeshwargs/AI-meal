@@ -1,0 +1,6 @@
+{
+  "name": "AI Smart Meal Planner",
+  "description": "A modern, AI-powered smart meal planner for personalized nutrition, weekly meal scheduling, smart grocery lists, and interactive AI nutrition assistance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
