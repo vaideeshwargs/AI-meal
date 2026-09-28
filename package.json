@@ -12,7 +12,8 @@
     "lint": "tsc --noEmit",
     "migrate:supabase": "tsx scripts/migrate-to-supabase.ts",
     "test:db": "tsx scripts/test-database.ts",
-    "test": "tsx scripts/test-database.ts"
+    "test": "tsx scripts/test-database.ts",
+    "postinstall": "node scripts/patch-vite-client.cjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
