@@ -27,9 +27,15 @@ export const AiPlannerView: React.FC = () => {
   const [mealsPerDay, setMealsPerDay] = useState<number>(userProfile.mealsPerDay || 4);
   const [budget, setBudget] = useState<BudgetLevel>(userProfile.budget || "Moderate");
   const [cookingTime, setCookingTime] = useState<CookingTimePreference>(userProfile.cookingTime || "Moderate (20-40m)");
-  const [favoriteFoods, setFavoriteFoods] = useState<string>(userProfile.favoriteFoods.join(", "));
-  const [foodsToAvoid, setFoodsToAvoid] = useState<string>(userProfile.foodsToAvoid.join(", "));
-  const [allergies, setAllergies] = useState<string[]>(userProfile.allergies || []);
+  const [favoriteFoods, setFavoriteFoods] = useState<string>(
+    Array.isArray(userProfile?.favoriteFoods) ? userProfile.favoriteFoods.join(", ") : ""
+  );
+  const [foodsToAvoid, setFoodsToAvoid] = useState<string>(
+    Array.isArray(userProfile?.foodsToAvoid) ? userProfile.foodsToAvoid.join(", ") : ""
+  );
+  const [allergies, setAllergies] = useState<string[]>(
+    Array.isArray(userProfile?.allergies) ? userProfile.allergies : []
+  );
   const [customAllergy, setCustomAllergy] = useState("");
   const [planDays, setPlanDays] = useState<1 | 7>(7);
 

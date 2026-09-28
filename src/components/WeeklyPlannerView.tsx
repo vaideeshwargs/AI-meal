@@ -65,11 +65,13 @@ export const WeeklyPlannerView: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          currentMealName: currentMeal.name,
+          currentMeal: { name: currentMeal.name, calories: currentMeal.calories },
           mealType: currentMeal.type,
-          dietPreference: userProfile.foodPreference,
-          targetCalories: currentMeal.calories,
-          allergies: userProfile.allergies.join(", "),
+          criteria: `Healthy alternative for ${currentMeal.type}`,
+          userPreferences: {
+            dietPreference: userProfile?.foodPreference || "Balanced",
+            allergies: Array.isArray(userProfile?.allergies) ? userProfile.allergies.join(", ") : "",
+          },
         }),
       });
 

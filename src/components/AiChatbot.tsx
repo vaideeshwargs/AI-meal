@@ -31,7 +31,7 @@ export const AiChatbot: React.FC<AiChatbotProps> = ({ isFullPage = false }) => {
     {
       id: "m-welcome",
       sender: "assistant",
-      text: `Hello ${userProfile.name}! 👋 I am your AI Nutritionist & Culinary Assistant. Ask me about ingredient substitutes, healthy high-protein snacks, meal prep strategies, or recipe adjustments for your ${userProfile.fitnessGoal} plan!`,
+      text: `Hello ${userProfile?.name || "there"}! 👋 I am your AI Nutritionist & Culinary Assistant. Ask me about ingredient substitutes, healthy high-protein snacks, meal prep strategies, or recipe adjustments for your ${userProfile?.fitnessGoal || "wellness"} plan!`,
       timestamp: "Just now",
     },
   ]);
@@ -124,7 +124,7 @@ export const AiChatbot: React.FC<AiChatbotProps> = ({ isFullPage = false }) => {
                 AI Nutritionist & Culinary Assistant
               </h1>
               <p className="text-xs text-slate-500">
-                Grounding answers in your personal goals: {userProfile.calorieTarget} kcal • {userProfile.fitnessGoal}
+                Grounding answers in your personal goals: {userProfile?.calorieTarget || 2000} kcal • {userProfile?.fitnessGoal || "Maintenance"}
               </p>
             </div>
           </div>

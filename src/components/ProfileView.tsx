@@ -29,8 +29,12 @@ export const ProfileView: React.FC = () => {
   const [calorieTarget, setCalorieTarget] = useState(userProfile.calorieTarget);
   const [proteinTarget, setProteinTarget] = useState(userProfile.proteinTarget);
   const [waterTargetMl, setWaterTargetMl] = useState(userProfile.waterTargetMl);
-  const [favoriteFoodsInput, setFavoriteFoodsInput] = useState(userProfile.favoriteFoods.join(", "));
-  const [foodsToAvoidInput, setFoodsToAvoidInput] = useState(userProfile.foodsToAvoid.join(", "));
+  const [favoriteFoodsInput, setFavoriteFoodsInput] = useState(
+    Array.isArray(userProfile?.favoriteFoods) ? userProfile.favoriteFoods.join(", ") : ""
+  );
+  const [foodsToAvoidInput, setFoodsToAvoidInput] = useState(
+    Array.isArray(userProfile?.foodsToAvoid) ? userProfile.foodsToAvoid.join(", ") : ""
+  );
 
   // Automated BMR/TDEE Calculator
   const calculateTDEE = () => {
@@ -86,7 +90,7 @@ export const ProfileView: React.FC = () => {
       <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-bold text-lg flex items-center justify-center shadow-md shadow-emerald-600/20">
-            {name[0] || "U"}
+            {name?.[0] || "U"}
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-heading">

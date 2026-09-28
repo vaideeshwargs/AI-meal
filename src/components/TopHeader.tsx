@@ -14,6 +14,7 @@ import {
   Check, 
   X 
 } from "lucide-react";
+import { PWAInstallButton } from "./PWAInstallButton.tsx";
 
 interface TopHeaderProps {
   onToggleMobileSidebar: () => void;
@@ -210,8 +211,11 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onToggleMobileSidebar }) =
         </div>
       </div>
 
-      {/* Right Controls: Hydration Tracker, Notifications, Profile */}
+      {/* Right Controls: Hydration Tracker, Install App, Notifications, Profile */}
       <div className="flex items-center gap-2 sm:gap-3">
+        {/* PWA Install Button */}
+        <PWAInstallButton />
+
         {/* Quick Hydration Tracker */}
         <div className="flex items-center gap-1.5 bg-sky-50 border border-sky-100 px-2.5 py-1 rounded-xl">
           <Droplet className="w-4 h-4 text-sky-500 fill-sky-500 shrink-0" />
@@ -285,10 +289,10 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onToggleMobileSidebar }) =
           className="flex items-center gap-2 p-1.5 sm:px-2.5 sm:py-1 rounded-xl hover:bg-slate-100 transition-colors"
         >
           <div className="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
-            {userProfile.name[0]}
+            {(userProfile?.name || "User")[0]}
           </div>
           <span className="hidden md:block text-xs font-semibold text-slate-700">
-            {userProfile.name}
+            {userProfile?.name || "Profile"}
           </span>
         </button>
       </div>

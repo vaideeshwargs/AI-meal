@@ -72,11 +72,40 @@ const STORAGE_KEYS = {
 };
 
 export const MealPlannerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Helper to ensure userProfile always has all required fields and valid array structures
+  const normalizeProfile = (raw: any): UserProfile => {
+    if (!raw || typeof raw !== "object") return initialUserProfile;
+    return {
+      ...initialUserProfile,
+      ...raw,
+      name: raw.name || initialUserProfile.name,
+      email: raw.email || initialUserProfile.email,
+      age: Number(raw.age) || initialUserProfile.age,
+      gender: raw.gender || initialUserProfile.gender,
+      heightCm: Number(raw.heightCm) || initialUserProfile.heightCm,
+      weightKg: Number(raw.weightKg) || initialUserProfile.weightKg,
+      activityLevel: raw.activityLevel || initialUserProfile.activityLevel,
+      foodPreference: raw.foodPreference || initialUserProfile.foodPreference,
+      fitnessGoal: raw.fitnessGoal || initialUserProfile.fitnessGoal,
+      calorieTarget: Number(raw.calorieTarget) || initialUserProfile.calorieTarget,
+      proteinTarget: Number(raw.proteinTarget) || initialUserProfile.proteinTarget,
+      carbsTarget: Number(raw.carbsTarget) || initialUserProfile.carbsTarget,
+      fatTarget: Number(raw.fatTarget) || initialUserProfile.fatTarget,
+      waterTargetMl: Number(raw.waterTargetMl) || initialUserProfile.waterTargetMl,
+      allergies: Array.isArray(raw.allergies) ? raw.allergies : (initialUserProfile.allergies || []),
+      favoriteFoods: Array.isArray(raw.favoriteFoods) ? raw.favoriteFoods : (initialUserProfile.favoriteFoods || []),
+      foodsToAvoid: Array.isArray(raw.foodsToAvoid) ? raw.foodsToAvoid : (initialUserProfile.foodsToAvoid || []),
+      mealsPerDay: Number(raw.mealsPerDay) || initialUserProfile.mealsPerDay || 4,
+      budget: raw.budget || initialUserProfile.budget || "Moderate",
+      cookingTime: raw.cookingTime || initialUserProfile.cookingTime || "Moderate (20-40m)",
+    };
+  };
+
   // 1. User Profile State
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.PROFILE);
-      return saved ? JSON.parse(saved) : initialUserProfile;
+      return saved ? normalizeProfile(JSON.parse(saved)) : initialUserProfile;
     } catch {
       return initialUserProfile;
     }
@@ -163,7 +192,7 @@ export const MealPlannerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         if (!mounted) return;
 
         if (profileRes.status === "fulfilled" && profileRes.value) {
-          setUserProfile(profileRes.value);
+          setUserProfile((prev) => normalizeProfile({ ...prev, ...profileRes.value }));
         }
         if (scheduleRes.status === "fulfilled" && Array.isArray(scheduleRes.value) && scheduleRes.value.length > 0) {
           setWeeklySchedule(normalizeSchedule(scheduleRes.value));
@@ -243,7 +272,7 @@ export const MealPlannerProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const updateUserProfile = (updated: Partial<UserProfile>) => {
-    setUserProfile((prev) => ({ ...prev, ...updated }));
+    setUserProfile((prev) => normalizeProfile({ ...prev, ...updated }));
     addToast("success", "Profile Updated", "Your dietary preferences and goals have been saved.");
   };
 

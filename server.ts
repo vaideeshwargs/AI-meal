@@ -19,9 +19,20 @@ import {
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 app.use(express.json());
+
+// CORS headers for production and cross-origin compatibility
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // Primary and fallback models supported by @google/genai SDK
 const PRIMARY_MODEL = "gemini-3.1-flash-lite";
@@ -546,10 +557,17 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), "dist");
+    const distPath = fs.existsSync(path.join(process.cwd(), "dist", "index.html"))
+      ? path.join(process.cwd(), "dist")
+      : __dirname;
     app.use(express.static(distPath));
     app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+      const htmlPath = path.join(distPath, "index.html");
+      if (fs.existsSync(htmlPath)) {
+        res.sendFile(htmlPath);
+      } else {
+        res.status(404).send("Application build not found. Please run npm run build.");
+      }
     });
   }
 

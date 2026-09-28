@@ -17,6 +17,7 @@ import {
   Menu,
   X
 } from "lucide-react";
+import { PWAInstallButton } from "./PWAInstallButton.tsx";
 
 interface SidebarProps {
   isMobileOpen: boolean;
@@ -135,6 +136,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
           })}
         </div>
 
+        {/* PWA Install Button (Sidebar full banner) */}
+        <div className="px-3 mb-2">
+          <PWAInstallButton className="w-full justify-center py-2" variant="full" />
+        </div>
+
         {/* Daily Goal Mini Widget */}
         <div className="p-3 mx-3 mb-3 rounded-xl bg-gradient-to-br from-slate-50 to-emerald-50/50 border border-emerald-100/70">
           <div className="flex items-center justify-between text-xs mb-1.5">
@@ -168,11 +174,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
           >
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-full bg-emerald-600 text-white font-semibold text-xs flex items-center justify-center ring-2 ring-emerald-100">
-                {userProfile.name.split(" ").map((n) => n[0]).join("")}
+                {(userProfile?.name || "User").split(" ").map((n) => n[0] || "").join("") || "U"}
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-slate-800 truncate">{userProfile.name}</p>
-                <p className="text-[11px] text-slate-500 truncate">{userProfile.fitnessGoal}</p>
+                <p className="text-xs font-semibold text-slate-800 truncate">{userProfile?.name || "User"}</p>
+                <p className="text-[11px] text-slate-500 truncate">{userProfile?.fitnessGoal || "Maintenance"}</p>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-400" />

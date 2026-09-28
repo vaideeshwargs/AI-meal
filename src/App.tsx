@@ -15,6 +15,7 @@ import { AiChatbot } from "./components/AiChatbot";
 import { MealDetailModal } from "./components/MealDetailModal";
 import { AddEditMealModal } from "./components/AddEditMealModal";
 import { ToastContainer } from "./components/ToastContainer";
+import { OfflineIndicator } from "./components/OfflineIndicator.tsx";
 
 const MainContent: React.FC = () => {
   const { activeTab } = useMealPlanner();
@@ -73,6 +74,7 @@ const MainContent: React.FC = () => {
       <MealDetailModal />
       <AddEditMealModal />
       <ToastContainer />
+      <OfflineIndicator />
     </div>
   );
 };

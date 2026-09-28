@@ -20,10 +20,10 @@ export const NutritionAnalyticsView: React.FC = () => {
   const [activeMetric, setActiveMetric] = useState<"calories" | "protein" | "carbs" | "fat">("calories");
 
   // Macro calculations
-  const totalPlannedCalories = weeklySchedule.reduce((sum, d) => sum + d.totalCalories, 0);
-  const totalPlannedProtein = weeklySchedule.reduce((sum, d) => sum + d.totalProtein, 0);
-  const totalPlannedCarbs = weeklySchedule.reduce((sum, d) => sum + d.totalCarbs, 0);
-  const totalPlannedFat = weeklySchedule.reduce((sum, d) => sum + d.totalFat, 0);
+  const totalPlannedCalories = weeklySchedule.reduce((sum, d) => sum + (d?.totalCalories || 0), 0);
+  const totalPlannedProtein = weeklySchedule.reduce((sum, d) => sum + (d?.totalProtein || 0), 0);
+  const totalPlannedCarbs = weeklySchedule.reduce((sum, d) => sum + (d?.totalCarbs || 0), 0);
+  const totalPlannedFat = weeklySchedule.reduce((sum, d) => sum + (d?.totalFat || 0), 0);
 
   // Grams to calories: Protein = 4 kcal/g, Carbs = 4 kcal/g, Fat = 9 kcal/g
   const proteinKcal = totalPlannedProtein * 4;
@@ -35,13 +35,14 @@ export const NutritionAnalyticsView: React.FC = () => {
   const carbsRatio = Math.round((carbsKcal / grandKcal) * 100);
   const fatRatio = 100 - proteinRatio - carbsRatio;
 
-  const avgDailyCal = Math.round(totalPlannedCalories / 7);
-  const avgDailyProtein = Math.round(totalPlannedProtein / 7);
-  const avgDailyCarbs = Math.round(totalPlannedCarbs / 7);
-  const avgDailyFat = Math.round(totalPlannedFat / 7);
+  const numDays = weeklySchedule.length || 7;
+  const avgDailyCal = Math.round(totalPlannedCalories / numDays);
+  const avgDailyProtein = Math.round(totalPlannedProtein / numDays);
+  const avgDailyCarbs = Math.round(totalPlannedCarbs / numDays);
+  const avgDailyFat = Math.round(totalPlannedFat / numDays);
 
   // Goal deviation
-  const calDelta = avgDailyCal - userProfile.calorieTarget;
+  const calDelta = avgDailyCal - (userProfile?.calorieTarget || 2000);
 
   return (
     <div className="space-y-6 pb-12">
