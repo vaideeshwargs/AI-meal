@@ -4,6 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>AI Smart Meal Planner</title>
+    <script>
+      // Suppress Vite HMR / WebSocket connection error logs in AI Studio preview iframe
+      (function() {
+        var origError = console.error;
+        console.error = function() {
+          var msg = Array.prototype.slice.call(arguments).join(' ');
+          if (
+            msg.indexOf('[vite]') !== -1 &&
+            (msg.indexOf('websocket') !== -1 || msg.indexOf('WebSocket') !== -1 || msg.indexOf('connection lost') !== -1 || msg.indexOf('connecting') !== -1)
+          ) {
+            return;
+          }
+          return origError.apply(console, arguments);
+        };
+        window.addEventListener('unhandledrejection', function(event) {
+          if (event && event.reason && String(event.reason).indexOf('vite') !== -1) {
+            event.preventDefault();
+          }
+        });
+      })();
+    </script>
     <meta name="description" content="A modern, AI-powered smart meal planner for personalized nutrition, weekly meal scheduling, smart grocery lists, and interactive AI nutrition assistance." />
     
     <!-- PWA & Mobile Web Meta -->
